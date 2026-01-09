@@ -13,6 +13,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          cmake \
+          make \
+          gcc-aarch64-linux-gnu \
+          g++-aarch64-linux-gnu \
+          pkg-config \
+          libdrm-dev
     - name: set up environment var 
       run: |
         export CC=aarch64-linux-gnu-gcc\
