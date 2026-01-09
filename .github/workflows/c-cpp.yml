@@ -31,7 +31,18 @@ jobs:
         export LD=aarch64-linux-gnu-ld\
         export STRIP=aarch64-linux-gnu-strip\
     - name: configure
-      run: ./configure --prefix=/usr --enable-gpl --enable-version3 --enable-libdrm --enable-rkmpp --enable-rkrga --host=aarch64-linux-gnu
+      run: |
+        ./configure \
+        --prefix=/usr \
+        --enable-gpl \
+        --enable-version3 \
+        --enable-libdrm \
+        --enable-rkmpp \
+        --enable-rkrga \
+        --enable-cross-compile \
+        --arch=aarch64 \
+        --target-os=linux \
+        --cross-prefix=aarch64-linux-gnu-
     - name: make&installl
       run: |
         mkdir ./staging
