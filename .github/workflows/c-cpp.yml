@@ -1,0 +1,36 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: set up environment var 
+      run: |
+        export CC=aarch64-linux-gnu-gcc\
+        export CXX=aarch64-linux-gnu-g++\
+        export AR=aarch64-linux-gnu-ar\
+        export LD=aarch64-linux-gnu-ld\
+        export STRIP=aarch64-linux-gnu-strip\
+    - name: configure
+      run: ./configure --prefix=/usr --enable-gpl --enable-version3 --enable-libdrm --enable-rkmpp --enable-rkrga --host=aarch64-linux-gnu
+    - name: make&installl
+      run: |
+        mkdir ./staging
+        make &&make install DESTDIR=staging
+    - name: Package artifacts
+      run: |
+        tar czf mpp-rk3566.tar.gz mpp/build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ffmpeg-rk3566
+        path: ffmpeg-rk3566.tar.gz
